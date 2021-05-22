@@ -23,7 +23,8 @@ public class Queen extends Piece {
                 }
             }
             return true;
-        } if (x == 0) {
+        }
+        if (x == 0) {
             for (int i = startPos.getY() + 1; i < destPos.getY(); i++) {
                 if (board.getTiles()[startPos.getX()][i].getPiece() != null) {
                     return false;
@@ -42,12 +43,4 @@ public class Queen extends Piece {
         return true;
     }
 
-    @Override
-    public String getIcon() {
-        return isWhite() ? "♛" : "♕";
-    }
-    @Override
-    public String getNotation() {
-        return "Q";
-    }
 }

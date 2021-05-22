@@ -2,11 +2,11 @@ package com.alanbaumgartner.chess.pieces;
 
 import com.alanbaumgartner.chess.Board;
 import com.alanbaumgartner.chess.Tile;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 public abstract class Piece {
 
     private final boolean white;
-    private boolean killed;
 
     public Piece(boolean white) {
         this.white = white;
@@ -14,25 +14,13 @@ public abstract class Piece {
 
     public abstract boolean canMove(Board board, Tile startPos, Tile destPos);
 
-    public abstract String getIcon();
-
-    public abstract String getNotation();
-
     public boolean isWhite() {
         return white;
     }
 
-    public boolean isKilled() {
-        return killed;
-    }
-
-    public void setKilled(boolean killed) {
-        this.killed = killed;
-    }
-
     @Override
     public String toString() {
-        return getIcon();
+        return NotationUtility.getPieceIcon(this.getClass(), isWhite());
     }
 
     @Override
@@ -42,14 +30,11 @@ public abstract class Piece {
 
         Piece piece = (Piece) o;
 
-        if (isWhite() != piece.isWhite()) return false;
-        return isKilled() == piece.isKilled();
+        return isWhite() == piece.isWhite();
     }
 
     @Override
     public int hashCode() {
-        int result = (isWhite() ? 1 : 0);
-        result = 31 * result + (isKilled() ? 1 : 0);
-        return result;
+        return (isWhite() ? 1 : 0);
     }
 }

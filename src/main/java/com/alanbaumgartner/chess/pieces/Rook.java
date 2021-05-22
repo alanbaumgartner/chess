@@ -34,14 +34,4 @@ public class Rook extends Piece {
         return false;
     }
 
-    @Override
-    public String getIcon() {
-        return isWhite() ? "♜" : "♖";
-    }
-
-    @Override
-    public String getNotation() {
-        return "R";
-    }
-
 }

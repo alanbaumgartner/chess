@@ -23,14 +23,4 @@ public class Pawn extends Piece {
         }
     }
 
-    @Override
-    public String getIcon() {
-        return isWhite() ? "♟" : "♙";
-    }
-
-    @Override
-    public String getNotation() {
-        return "P";
-    }
-
 }

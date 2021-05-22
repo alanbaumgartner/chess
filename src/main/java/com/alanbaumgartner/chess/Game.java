@@ -1,18 +1,26 @@
 package com.alanbaumgartner.chess;
 
+import com.alanbaumgartner.chess.pieces.Piece;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    private List<Move> moves;
+    private final Board board;
     private boolean whiteTurn;
-    private Board board;
+    private final List<Move> moves;
+
+    private final List<Piece> whitePieces;
+    private final List<Piece> blackPieces;
 
     public Game() {
         moves = new ArrayList<>();
         board = new Board();
         whiteTurn = true;
+
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
     }
 
     public boolean doMove(Move move) {
@@ -20,7 +28,14 @@ public class Game {
             return false;
         }
         if (move.getPiece().canMove(board, move.getStartPos(), move.getDestPos())) {
-            move.doMove();
+            Piece piece = move.doMove();
+            if (piece != null) {
+                if (whiteTurn) {
+                    blackPieces.add(piece);
+                } else {
+                    whitePieces.add(piece);
+                }
+            }
             moves.add(move);
             whiteTurn = !whiteTurn;
             return true;
@@ -44,6 +59,7 @@ public class Game {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append(board.getString(whitePieces, blackPieces)).append("\n\n");
         for (int i = 0; i < moves.size(); i++) {
             if (i % 2 == 0) {
                 sb.append(((i / 2) + 1) + ") ").append(moves.get(i)).append(", ");

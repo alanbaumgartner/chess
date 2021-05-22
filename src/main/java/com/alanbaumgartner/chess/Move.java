@@ -3,37 +3,28 @@ package com.alanbaumgartner.chess;
 import com.alanbaumgartner.chess.pieces.King;
 import com.alanbaumgartner.chess.pieces.Piece;
 import com.alanbaumgartner.chess.pieces.Rook;
-
-import java.util.Map;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 public class Move {
-
-    private static final Map<Integer, String> xPosMap = Map.of(
-        0, "a",
-        1, "b",
-        2, "c",
-        3, "d",
-        4, "e",
-        5, "f",
-        6, "g",
-        7, "h"
-    );
 
     private Piece piece;
     private Tile startPos;
     private Tile destPos;
-    private boolean castling = false;
+    private boolean castling;
+    private boolean capturing;
 
     public Move(Piece piece, Tile startPos, Tile destPos) {
         this.piece = piece;
         this.startPos = startPos;
         this.destPos = destPos;
+        castling = false;
+        capturing = false;
     }
 
     public Piece doMove() {
         Piece ret = destPos.getPiece();
         if (ret != null) {
-            ret.setKilled(true);
+            capturing = true;
         }
 //        castling = isCastling(startPos, destPos);
         destPos.setPiece(startPos.getPiece());
@@ -47,10 +38,7 @@ public class Move {
         }
         Piece startPiece = startPos.getPiece();
         Piece destPiece = destPos.getPiece();
-        if (startPiece.isWhite() == destPiece.isWhite() && startPiece instanceof King && destPiece instanceof Rook) {
-            return true;
-        }
-        return false;
+        return startPiece.isWhite() == destPiece.isWhite() && startPiece instanceof King && destPiece instanceof Rook;
     }
 
     public Piece getPiece() {
@@ -79,6 +67,6 @@ public class Move {
 
     @Override
     public String toString() {
-        return piece.getNotation() + xPosMap.get(destPos.getX()) + (destPos.getY() + 1);
+        return NotationUtility.getPieceNotation(piece.getClass()) + (capturing ? "x" : "") + NotationUtility.getRowMappingFromInt(destPos.getX()) + (destPos.getY() + 1);
     }
 }

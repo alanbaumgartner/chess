@@ -1,14 +1,16 @@
 package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.*;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
-    private Tile[][] tiles;
-    private Tile whiteKing;
-    private Tile blackKing;
+    private final Tile[][] tiles;
+    private final Tile whiteKing;
+    private final Tile blackKing;
 
     private boolean whiteChecked;
     private boolean blackChecked;
@@ -53,12 +55,30 @@ public class Board {
         blackChecked = false;
     }
 
+    public boolean isWhiteChecked() {
+        return whiteChecked;
+    }
+
+    public void setWhiteChecked(boolean whiteChecked) {
+        this.whiteChecked = whiteChecked;
+    }
+
+    public boolean isBlackChecked() {
+        return blackChecked;
+    }
+
+    public void setBlackChecked(boolean blackChecked) {
+        this.blackChecked = blackChecked;
+    }
+
     public Tile[][] getTiles() {
         return tiles;
     }
 
-    public void setTiles(Tile[][] tiles) {
-        this.tiles = tiles;
+    public Tile getTileByNotation(String tile) {
+        int row = NotationUtility.getRowMappingFromString(String.valueOf(tile.charAt(0)));
+        int column = Integer.parseInt(String.valueOf(tile.charAt(1))) - 1;
+        return tiles[row][column];
     }
 
     public Tile getKing(boolean white) {
@@ -87,6 +107,31 @@ public class Board {
             sb.append(i + 1).append(" ");
             for (int j = 0; j < 8; j++) {
                 sb.append(tiles[j][i].toString()).append(" ");
+            }
+            sb.append("\n");
+        }
+        sb.append("  ").append("a b c d e f g h");
+        return sb.toString();
+    }
+
+    public String getString(List<Piece> whitePieces, List<Piece> blackPieces) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 7; i >= 0; i--) {
+            sb.append(i + 1).append(" ");
+            for (int j = 0; j < 8; j++) {
+                sb.append(tiles[j][i].toString()).append(" ");
+                if (i == 0 && j == 7 && blackPieces.size() > 0) {
+                    sb.append(" | ");
+                    for (Piece piece : blackPieces) {
+                        sb.append(NotationUtility.getPieceIcon(piece.getClass(), piece.isWhite())).append(" ");
+                    }
+                }
+                if (i == 7 && j == 7 && whitePieces.size() > 0) {
+                    sb.append(" | ");
+                    for (Piece piece : whitePieces) {
+                        sb.append(NotationUtility.getPieceIcon(piece.getClass(), piece.isWhite())).append(" ");
+                    }
+                }
             }
             sb.append("\n");
         }

@@ -19,14 +19,4 @@ public class Knight extends Piece {
         return x * y == 2;
     }
 
-    @Override
-    public String getIcon() {
-        return isWhite() ? "♞" : "♘";
-    }
-
-    @Override
-    public String getNotation() {
-        return "N";
-    }
-
 }

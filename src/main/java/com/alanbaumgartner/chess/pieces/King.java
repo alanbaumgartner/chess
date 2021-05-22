@@ -17,12 +17,4 @@ public class King extends Piece {
         return false;
     }
 
-    @Override
-    public String getIcon() {
-        return isWhite() ? "♚" : "♔";
-    }
-    @Override
-    public String getNotation() {
-        return "K";
-    }
 }

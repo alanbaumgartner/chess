@@ -1,11 +1,12 @@
 package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.Piece;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 public class Tile {
     private Piece piece;
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public Tile(Piece piece, int x, int y) {
         this.piece = piece;
@@ -25,16 +26,8 @@ public class Tile {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     @Override
@@ -59,6 +52,6 @@ public class Tile {
 
     @Override
     public String toString() {
-        return piece != null ? piece.toString() : " ";
+        return piece != null ? piece.toString() : NotationUtility.ICON_SPACE;
     }
 }
