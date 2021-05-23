@@ -1,40 +1,47 @@
 package com.alanbaumgartner.chess.pieces;
 
 import com.alanbaumgartner.chess.Board;
-import com.alanbaumgartner.chess.Tile;
-import com.alanbaumgartner.chess.util.NotationUtility;
+import com.alanbaumgartner.chess.Position;
 
-public abstract class Piece {
+public class Piece {
 
-    private final boolean white;
+    private final Color color;
+    private Role role;
 
-    public Piece(boolean white) {
-        this.white = white;
+    public Piece(final Color color, final Role role) {
+        this.color = color;
+        this.role = role;
     }
 
-    public abstract boolean canMove(Board board, Tile startPos, Tile destPos);
+    public boolean canMove(Board board, Position start, Position dest) {
+        return switch (this.role) {
+            case PAWN ->  start.isPathOpen(dest);
+            case KNIGHT -> start.isL(dest) && start.isPathOpen(dest);
+            case BISHOP -> start.onSameDiagonal(dest) && start.isPathOpen(dest);
+            case ROOK -> start.onSameLine(dest) && start.isPathOpen(dest);
+            case QUEEN -> (start.onSameDiagonal(dest) || start.onSameLine(dest)) && start.isPathOpen(dest);
+            case KING -> start.isAdjacent(dest) && start.isPathOpen(dest);
+        };
+    }
 
-    public boolean isWhite() {
-        return white;
+    public Color getColor() {
+        return color;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
-        return NotationUtility.getPieceIcon(this.getClass(), isWhite());
+        return this.role.getIcon(this.color);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Piece piece = (Piece) o;
-
-        return isWhite() == piece.isWhite();
-    }
-
-    @Override
-    public int hashCode() {
-        return (isWhite() ? 1 : 0);
+    public String getNotation() {
+        return this.role.getNotation();
     }
 }

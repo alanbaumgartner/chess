@@ -1,44 +1,41 @@
 package com.alanbaumgartner.chess;
 
-import com.alanbaumgartner.chess.pieces.Piece;
-
 public class Main {
 
     public static void main(String[] args) {
-        Game game = new Game();
-        Board board = game.getBoard();
+        Board board = new Board();
 
+        Position whitePawn = board.getTiles()[2][1];
+        Position whitePawnMove = board.getTiles()[2][2];
 
-        Tile whitePawn = board.getTiles()[2][1];
-        Tile whitePawnMove = board.getTiles()[2][2];
+        Position blackPawnPosition = board.getTiles()[2][6];
+        Position blackPawnMovePosition = board.getTiles()[2][5];
+        Position blackPawnMovePosition2 = board.getTiles()[2][4];
 
-        Tile blackPawnTile = board.getTiles()[2][6];
-        Tile blackPawnMoveTile = board.getTiles()[2][5];
-        Tile blackPawnMoveTile2 = board.getTiles()[2][4];
+        Position blackQueenPosition = board.getTiles()[3][7];
+        Position blackQueenMovePosition = board.getTiles()[1][5];
 
-        Tile blackQueenTile = board.getTiles()[3][7];
-        Tile blackQueenMoveTile = board.getTiles()[1][5];
-
-        Tile whiteQueenTile = board.getTiles()[3][0];
-        Tile whiteQueenMoveTile = board.getTiles()[1][2];
-        Tile whiteQueenMoveTile2 = board.getTiles()[1][5];
-        Tile whiteQueenMoveTile3 = board.getTiles()[3][7];
-
+        Position whiteQueenPosition = board.getTiles()[3][0];
+        Position whiteQueenMovePosition = board.getTiles()[1][2];
+        Position whiteQueenMovePosition2 = board.getTiles()[1][5];
+        Position whiteQueenMovePosition3 = board.getTiles()[3][7];
+//
         Move move = new Move(whitePawn, whitePawnMove, board);
-        game.doMove(move);
-        Move move2 = new Move(blackPawnTile, blackPawnMoveTile, board);
-        game.doMove(move2);
-        Move move3 = new Move(whiteQueenTile, whiteQueenMoveTile, board);
-        game.doMove(move3);
-        Move move4 = new Move(blackQueenTile, blackQueenMoveTile, board);
-        game.doMove(move4);
-        Move move5 = new Move(whiteQueenMoveTile, whiteQueenMoveTile2, board);
-        game.doMove(move5);
-        Move move6 = new Move(blackPawnMoveTile, blackPawnMoveTile2, board);
-        game.doMove(move6);
-        Move move7 = new Move(whiteQueenMoveTile2, whiteQueenMoveTile3, board);
-        game.doMove(move7);
-        System.out.println(game);
+        board.doMove(move);
+        Move move2 = new Move(blackPawnPosition, blackPawnMovePosition, board);
+        board.doMove(move2);
+        Move move3 = new Move(whiteQueenPosition, whiteQueenMovePosition, board);
+        board.doMove(move3);
+        Move move4 = new Move(blackQueenPosition, blackQueenMovePosition, board);
+        board.doMove(move4);
+        Move move5 = new Move(whiteQueenMovePosition, whiteQueenMovePosition2, board);
+        board.doMove(move5);
+        Move move6 = new Move(blackPawnMovePosition, blackPawnMovePosition2, board);
+        board.doMove(move6);
+        Move move7 = new Move(whiteQueenMovePosition2, whiteQueenMovePosition3, board);
+        board.doMove(move7);
+        System.out.println(board);
+//        System.out.println(board.getString());
     }
 
 }

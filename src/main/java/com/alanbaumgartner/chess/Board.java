@@ -1,8 +1,9 @@
 package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.*;
-import com.alanbaumgartner.chess.util.NotationUtility;
+//import com.alanbaumgartner.chess.util.NotationUtility;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,51 +11,61 @@ import java.util.stream.Stream;
 
 public class Board {
 
-    private final Tile[][] tiles;
-    private final Tile whiteKing;
-    private final Tile blackKing;
+    private final Position[][] positions;
+    private final List<Move> moves;
 
     private boolean whiteChecked;
     private boolean blackChecked;
 
     public Board() {
-        tiles = new Tile[8][8];
+        positions = new Position[8][8];
+        moves = new ArrayList<>();
+
+        Color white = Color.WHITE;
+        Color black = Color.BLACK;
+
+        Role pawn = Role.PAWN;
+        Role knight = Role.KNIGHT;
+        Role bishop = Role.BISHOP;
+        Role rook = Role.ROOK;
+        Role queen = Role.QUEEN;
+        Role king = Role.KING;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                tiles[i][j] = new Tile(null, i, j);
+                positions[i][j] = new Position(this, null, i, j);
             }
         }
 
-        tiles[0][0] = new Tile(new Rook(true), 0, 0);
-        tiles[1][0] = new Tile(new Knight(true), 1, 0);
-        tiles[2][0] = new Tile(new Bishop(true), 2, 0);
-        tiles[3][0] = new Tile(new Queen(true), 3, 0);
-        tiles[4][0] = new Tile(new King(true), 4, 0);
-        tiles[5][0] = new Tile(new Bishop(true), 5, 0);
-        tiles[6][0] = new Tile(new Knight(true), 6, 0);
-        tiles[7][0] = new Tile(new Rook(true), 7, 0);
+        positions[0][0] = new Position(this, new Piece(white, rook), 0, 0);
+        positions[1][0] = new Position(this, new Piece(white, knight), 1, 0);
+        positions[2][0] = new Position(this, new Piece(white, bishop), 2, 0);
+        positions[3][0] = new Position(this, new Piece(white, queen), 3, 0);
+        positions[4][0] = new Position(this, new Piece(white, king), 4, 0);
+        positions[5][0] = new Position(this, new Piece(white, bishop), 5, 0);
+        positions[6][0] = new Position(this, new Piece(white, knight), 6, 0);
+        positions[7][0] = new Position(this, new Piece(white, rook), 7, 0);
 
         for (int i = 0; i < 8; i++) {
-            tiles[i][1] = new Tile(new Pawn(true), i, 1);
+            positions[i][1] = new Position(this, new Piece(white, pawn), i, 1);
         }
 
-        tiles[0][7] = new Tile(new Rook(false), 0, 7);
-        tiles[1][7] = new Tile(new Knight(false), 1, 7);
-        tiles[2][7] = new Tile(new Bishop(false), 2, 7);
-        tiles[3][7] = new Tile(new Queen(false), 3, 7);
-        tiles[4][7] = new Tile(new King(false), 4, 7);
-        tiles[5][7] = new Tile(new Bishop(false), 5, 7);
-        tiles[6][7] = new Tile(new Knight(false), 6, 7);
-        tiles[7][7] = new Tile(new Rook(false), 7, 7);
+        positions[0][7] = new Position(this, new Piece(black, rook), 0, 7);
+        positions[1][7] = new Position(this, new Piece(black, knight), 1, 7);
+        positions[2][7] = new Position(this, new Piece(black, bishop), 2, 7);
+        positions[3][7] = new Position(this, new Piece(black, queen), 3, 7);
+        positions[4][7] = new Position(this, new Piece(black, king), 4, 7);
+        positions[5][7] = new Position(this, new Piece(black, bishop), 5, 7);
+        positions[6][7] = new Position(this, new Piece(black, knight), 6, 7);
+        positions[7][7] = new Position(this, new Piece(black, rook), 7, 7);
 
         for (int i = 0; i < 8; i++) {
-            tiles[i][6] = new Tile(new Pawn(false), i, 6);
+            positions[i][6] = new Position(this, new Piece(black, pawn), i, 6);
         }
-        whiteKing = tiles[4][0];
-        blackKing = tiles[4][7];
-        whiteChecked = false;
-        blackChecked = false;
+//        whiteKing = positions[4][0];
+//        blackKing = positions[4][7];
+//        whiteChecked = false;
+//        blackChecked = false;
     }
 
     public boolean isWhiteChecked() {
@@ -73,34 +84,43 @@ public class Board {
         this.blackChecked = blackChecked;
     }
 
-    public Tile[][] getTiles() {
-        return tiles;
+    public Position[][] getTiles() {
+        return positions;
     }
 
-    public List<Tile> getWhitePieces() {
-        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && tile.getPiece().isWhite()).collect(Collectors.toList());
-    }
+//    public List<Position> getWhitePieces() {
+//        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && position.getPiece().isWhite()).collect(Collectors.toList());
+//    }
+//
+//    public List<Position> getBlackPieces() {
+//        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && !position.getPiece().isWhite()).collect(Collectors.toList());
+//    }
+//
+//    public Position getWhiteKing() {
+//        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && position.getPiece().isWhite() && (position.getPiece() instanceof King)).findAny().orElse(null);
+//    }
+//
+//    public Position getBlackKing() {
+//        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && !position.getPiece().isWhite() && (position.getPiece() instanceof King)).findAny().orElse(null);
+//    }
 
-    public List<Tile> getBlackPieces() {
-        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && !tile.getPiece().isWhite()).collect(Collectors.toList());
-    }
+//    public Position getTileByNotation(String position) {
+//        int row = NotationUtility.getRowMappingFromString(String.valueOf(position.charAt(0)));
+//        int column = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
+//        return positions[row][column];
+//    }
 
-    public Tile getWhiteKing() {
-        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && tile.getPiece().isWhite() && (tile.getPiece() instanceof King)).findAny().orElse(null);
-    }
+//    public Position getKing(boolean white) {
+//        return white ? whiteKing : blackKing;
+//    }
 
-    public Tile getBlackKing() {
-        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && !tile.getPiece().isWhite() && (tile.getPiece() instanceof King)).findAny().orElse(null);
-    }
-
-    public Tile getTileByNotation(String tile) {
-        int row = NotationUtility.getRowMappingFromString(String.valueOf(tile.charAt(0)));
-        int column = Integer.parseInt(String.valueOf(tile.charAt(1))) - 1;
-        return tiles[row][column];
-    }
-
-    public Tile getKing(boolean white) {
-        return white ? whiteKing : blackKing;
+    public boolean doMove(Move move) {
+        if (move.getPiece().canMove(this, move.getStartPos(), move.getDestPos())) {
+            move.doMove();
+            moves.add(move);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -124,36 +144,20 @@ public class Board {
         for (int i = 7; i >= 0; i--) {
             sb.append(i + 1).append(" ");
             for (int j = 0; j < 8; j++) {
-                sb.append(tiles[j][i].toString()).append(" ");
+                sb.append(positions[j][i].toString()).append(" ");
             }
             sb.append("\n");
         }
         sb.append("  ").append("a b c d e f g h");
-        return sb.toString();
-    }
-
-    public String getString(List<Piece> whitePieces, List<Piece> blackPieces) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 7; i >= 0; i--) {
-            sb.append(i + 1).append(" ");
-            for (int j = 0; j < 8; j++) {
-                sb.append(tiles[j][i].toString()).append(" ");
-                if (i == 0 && j == 7 && blackPieces.size() > 0) {
-                    sb.append(" | ");
-                    for (Piece piece : blackPieces) {
-                        sb.append(NotationUtility.getPieceIcon(piece.getClass(), piece.isWhite())).append(" ");
-                    }
-                }
-                if (i == 7 && j == 7 && whitePieces.size() > 0) {
-                    sb.append(" | ");
-                    for (Piece piece : whitePieces) {
-                        sb.append(NotationUtility.getPieceIcon(piece.getClass(), piece.isWhite())).append(" ");
-                    }
-                }
+        // moves in notation
+        sb.append("\n");
+        for (int i = 0; i < moves.size(); i++) {
+            if (i % 2 == 0) {
+                sb.append(((i / 2) + 1) + ") ").append(moves.get(i)).append(", ");
+            } else {
+                sb.append(moves.get(i)).append("\n");
             }
-            sb.append("\n");
         }
-        sb.append("  a b c d e f g h");
         return sb.toString();
     }
 }
