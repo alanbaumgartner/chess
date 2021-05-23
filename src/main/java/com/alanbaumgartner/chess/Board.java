@@ -5,6 +5,8 @@ import com.alanbaumgartner.chess.util.NotationUtility;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Board {
 
@@ -73,6 +75,22 @@ public class Board {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public List<Tile> getWhitePieces() {
+        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && tile.getPiece().isWhite()).collect(Collectors.toList());
+    }
+
+    public List<Tile> getBlackPieces() {
+        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && !tile.getPiece().isWhite()).collect(Collectors.toList());
+    }
+
+    public Tile getWhiteKing() {
+        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && tile.getPiece().isWhite() && (tile.getPiece() instanceof King)).findAny().orElse(null);
+    }
+
+    public Tile getBlackKing() {
+        return Arrays.stream(tiles).flatMap(Stream::of).filter(tile -> tile.getPiece() != null && !tile.getPiece().isWhite() && (tile.getPiece() instanceof King)).findAny().orElse(null);
     }
 
     public Tile getTileByNotation(String tile) {

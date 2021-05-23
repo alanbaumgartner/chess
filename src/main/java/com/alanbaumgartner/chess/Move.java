@@ -5,20 +5,28 @@ import com.alanbaumgartner.chess.pieces.Piece;
 import com.alanbaumgartner.chess.pieces.Rook;
 import com.alanbaumgartner.chess.util.NotationUtility;
 
+import java.util.List;
+
 public class Move {
 
-    private Piece piece;
-    private Tile startPos;
-    private Tile destPos;
+    private final Piece piece;
+    private final Board board;
+    private final Tile startPos;
+    private final Tile destPos;
     private boolean castling;
+    private boolean queenSideCastle;
     private boolean capturing;
+    private boolean checking;
 
-    public Move(Piece piece, Tile startPos, Tile destPos) {
-        this.piece = piece;
+    public Move(Tile startPos, Tile destPos, Board board) {
         this.startPos = startPos;
         this.destPos = destPos;
-        castling = false;
-        capturing = false;
+        this.piece = startPos.getPiece();
+        this.board = board;
+        this.castling = false;
+        this.capturing = false;
+        this.queenSideCastle = false;
+        this.checking = false;
     }
 
     public Piece doMove() {
@@ -29,6 +37,24 @@ public class Move {
 //        castling = isCastling(startPos, destPos);
         destPos.setPiece(startPos.getPiece());
         startPos.setPiece(null);
+
+        Tile king;
+        List<Tile> pieces;
+        if (piece.isWhite()) {
+            king = board.getBlackKing();
+//            pieces = board.getWhitePieces();
+        } else {
+            king = board.getWhiteKing();
+//            pieces = board.getBlackPieces();
+        }
+        if (piece.canMove(board, destPos, king)) {
+            checking = true;
+        }
+//        for (Tile tile : pieces) {
+//            if (tile.getPiece().canMove(board, tile, king)) {
+//                checking = true;
+//            }
+//        }
         return ret;
     }
 
@@ -45,28 +71,25 @@ public class Move {
         return piece;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    }
-
     public Tile getStartPos() {
         return startPos;
-    }
-
-    public void setStartPos(Tile startPos) {
-        this.startPos = startPos;
     }
 
     public Tile getDestPos() {
         return destPos;
     }
 
-    public void setDestPos(Tile destPos) {
-        this.destPos = destPos;
-    }
-
     @Override
     public String toString() {
-        return NotationUtility.getPieceNotation(piece.getClass()) + (capturing ? "x" : "") + NotationUtility.getRowMappingFromInt(destPos.getX()) + (destPos.getY() + 1);
+        String notation;
+        if (castling) {
+            notation = queenSideCastle ? "O-O-O" : "O-O";
+        } else {
+            notation = NotationUtility.getPieceNotation(piece.getClass()) +
+                        (capturing ? "x" : "") +
+                        NotationUtility.getRowMappingFromInt(destPos.getX()) +
+                        (destPos.getY() + 1) + (checking ? "+" : "");
+        }
+        return notation;
     }
 }

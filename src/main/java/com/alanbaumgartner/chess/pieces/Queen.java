@@ -17,7 +17,7 @@ public class Queen extends Piece {
             return false;
         }
         if (y == 0) {
-            for (int i = startPos.getX(); i < destPos.getX(); i++) {
+            for (int i = startPos.getX(); i < destPos.getX() - 1; i++) {
                 if (board.getTiles()[i][startPos.getY()].getPiece() != null) {
                     return false;
                 }
@@ -25,7 +25,7 @@ public class Queen extends Piece {
             return true;
         }
         if (x == 0) {
-            for (int i = startPos.getY() + 1; i < destPos.getY(); i++) {
+            for (int i = startPos.getY() + 1; i < destPos.getY() - 1; i++) {
                 if (board.getTiles()[startPos.getX()][i].getPiece() != null) {
                     return false;
                 }
@@ -35,8 +35,8 @@ public class Queen extends Piece {
         if (x != y) {
             return false;
         }
-        for (int i = startPos.getX(); i < x; i++) {
-            if (board.getTiles()[i][i].getPiece() != null) {
+        for (int i = startPos.getX(); i < x - 1; i++) {
+            if (board.getTiles()[startPos.getX() + i][startPos.getY() + i].getPiece() != null) {
                 return false;
             }
         }
