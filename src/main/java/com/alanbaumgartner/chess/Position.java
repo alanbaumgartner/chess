@@ -1,13 +1,12 @@
 package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.Piece;
-//import com.alanbaumgartner.chess.util.NotationUtility;
 
 public class Position {
-    private Piece piece;
     private final int file;
     private final int rank;
     private final Board board;
+    private Piece piece;
 
     public Position(Board board, Piece piece, int file, int rank) {
         this.board = board;
@@ -30,6 +29,22 @@ public class Position {
 
     public int getRank() {
         return rank;
+    }
+
+    public boolean isPawnMove(Position other) {
+        int dx = Math.abs(this.file - other.file);
+        int dy = Math.abs(this.rank - other.rank);
+        if (dy != 1 || dx > 1) {
+            return false;
+        }
+        if (dx == 1) {
+            if (other.getPiece() == null) {
+                return false;
+            } else {
+                return other.getPiece().getColor() != piece.getColor();
+            }
+        }
+        return true;
     }
 
     public boolean onSameDiagonal(Position other) {
@@ -64,6 +79,7 @@ public class Position {
         if (dx == 0) {
             for (int i = this.rank + 1; i < other.rank; i++) {
                 if (board.getTiles()[this.file][i].getPiece() != null) {
+                    System.out.println("here");
                     return false;
                 }
             }
@@ -71,6 +87,7 @@ public class Position {
         if (dy == 0) {
             for (int i = this.file + 1; i < other.file; i++) {
                 if (board.getTiles()[i][this.rank].getPiece() != null) {
+                    System.out.println("here");
                     return false;
                 }
             }

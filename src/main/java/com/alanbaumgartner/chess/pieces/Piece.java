@@ -13,9 +13,9 @@ public class Piece {
         this.role = role;
     }
 
-    public boolean canMove(Board board, Position start, Position dest) {
+    public boolean canMove(Position start, Position dest) {
         return switch (this.role) {
-            case PAWN ->  start.isPathOpen(dest);
+            case PAWN -> start.isPawnMove(dest) && start.isPathOpen(dest);
             case KNIGHT -> start.isL(dest) && start.isPathOpen(dest);
             case BISHOP -> start.onSameDiagonal(dest) && start.isPathOpen(dest);
             case ROOK -> start.onSameLine(dest) && start.isPathOpen(dest);
@@ -34,6 +34,10 @@ public class Piece {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isWhite() {
+        return this.getColor() == Color.WHITE;
     }
 
     @Override

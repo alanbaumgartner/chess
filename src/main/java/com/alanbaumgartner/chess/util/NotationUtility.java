@@ -1,6 +1,5 @@
 package com.alanbaumgartner.chess.util;
 
-import com.alanbaumgartner.chess.pieces.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 

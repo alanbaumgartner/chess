@@ -2,7 +2,6 @@ package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.Piece;
 import com.alanbaumgartner.chess.util.NotationUtility;
-//import com.alanbaumgartner.chess.util.NotationUtility;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Move {
         this.checking = false;
     }
 
-    public Piece doMove() {
+    public Piece apply() {
         Piece ret = destPos.getPiece();
         if (ret != null) {
             capturing = true;
@@ -37,27 +36,27 @@ public class Move {
         destPos.setPiece(startPos.getPiece());
         startPos.setPiece(null);
 
-//        Position king;
-//        List<Position> pieces;
-//        if (piece.isWhite()) {
-//            king = board.getBlackKing();
-////            pieces = board.getWhitePieces();
-//        } else {
-//            king = board.getWhiteKing();
-////            pieces = board.getBlackPieces();
-//        }
-//        if (piece.canMove(board, destPos, king)) {
-//            checking = true;
-//        }
-//        for (Tile position : pieces) {
-//            if (position.getPiece().canMove(board, position, king)) {
-//                checking = true;
-//            }
-//        }
+        Position king;
+        List<Position> pieces;
+        if (piece.isWhite()) {
+            king = board.getBlackKing();
+            pieces = board.getWhitePieces();
+        } else {
+            king = board.getWhiteKing();
+            pieces = board.getBlackPieces();
+        }
+        if (piece.canMove(destPos, king)) {
+            checking = true;
+        }
+        for (Position position : pieces) {
+            if (position.getPiece().canMove(position, king)) {
+                checking = true;
+            }
+        }
         return ret;
     }
 
-//    private boolean isCastling(Position startPos, Position destPos) {
+    //    private boolean isCastling(Position startPos, Position destPos) {
 //        if (startPos.getPiece() == null || destPos.getPiece() != null) {
 //            return false;
 //        }
@@ -85,9 +84,9 @@ public class Move {
             notation = queenSideCastle ? "O-O-O" : "O-O";
         } else {
             notation = piece.getNotation() +
-                        (capturing ? "x" : "") +
-                        NotationUtility.getRowMappingFromInt(destPos.getFile()) +
-                        (destPos.getRank() + 1) + (checking ? "+" : "");
+                    (capturing ? "x" : "") +
+                    NotationUtility.getRowMappingFromInt(destPos.getFile()) +
+                    (destPos.getRank() + 1) + (checking ? "+" : "");
         }
         return notation;
     }
