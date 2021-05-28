@@ -3,6 +3,7 @@ package com.alanbaumgartner.chess;
 import com.alanbaumgartner.chess.pieces.Color;
 import com.alanbaumgartner.chess.pieces.Piece;
 import com.alanbaumgartner.chess.pieces.Role;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,10 +67,6 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             positions[i][6] = new Position(this, new Piece(black, pawn), i, 6);
         }
-//        whiteKing = positions[4][0];
-//        blackKing = positions[4][7];
-//        whiteChecked = false;
-//        blackChecked = false;
     }
 
     public boolean isWhiteChecked() {
@@ -101,19 +98,31 @@ public class Board {
     }
 
     public List<Position> getWhitePieces() {
-        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && position.getPiece().isWhite()).collect(Collectors.toList());
+        return Arrays.stream(positions)
+                .flatMap(Stream::of)
+                .filter(position -> position.getPiece() != null && position.getPiece().isWhite())
+                .collect(Collectors.toList());
     }
 
     public List<Position> getBlackPieces() {
-        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && !position.getPiece().isWhite()).collect(Collectors.toList());
+        return Arrays.stream(positions)
+                .flatMap(Stream::of)
+                .filter(position -> position.getPiece() != null && !position.getPiece().isWhite())
+                .collect(Collectors.toList());
     }
 
     public Position getWhiteKing() {
-        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && position.getPiece().isWhite() && (position.getPiece().getRole() == Role.KING)).findAny().orElse(null);
+        return Arrays.stream(positions)
+                .flatMap(Stream::of)
+                .filter(position -> position.getPiece() != null && position.getPiece().isWhite() && (position.getPiece().getRole() == Role.KING))
+                .findAny().orElse(null);
     }
 
     public Position getBlackKing() {
-        return Arrays.stream(positions).flatMap(Stream::of).filter(position -> position.getPiece() != null && !position.getPiece().isWhite() && (position.getPiece().getRole() == Role.KING)).findAny().orElse(null);
+        return Arrays.stream(positions)
+                .flatMap(Stream::of)
+                .filter(position -> position.getPiece() != null && !position.getPiece().isWhite() && (position.getPiece().getRole() == Role.KING))
+                .findAny().orElse(null);
     }
 
     @Override
@@ -167,7 +176,22 @@ public class Board {
             }
             sb.append("\n");
         }
-        sb.append("  ").append("a b c d e f g h");
+        sb.append("  ")
+            .append("a")
+            .append(NotationUtility.ICON_SPACE)
+            .append("b")
+            .append(NotationUtility.ICON_SPACE)
+            .append("c")
+            .append(NotationUtility.ICON_SPACE)
+            .append("d")
+            .append(NotationUtility.ICON_SPACE)
+            .append("e")
+            .append(NotationUtility.ICON_SPACE)
+            .append("f")
+            .append(NotationUtility.ICON_SPACE)
+            .append("g")
+            .append(NotationUtility.ICON_SPACE)
+            .append("h");
         return sb.toString();
     }
 }

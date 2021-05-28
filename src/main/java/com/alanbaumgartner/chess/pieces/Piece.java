@@ -1,6 +1,5 @@
 package com.alanbaumgartner.chess.pieces;
 
-import com.alanbaumgartner.chess.Board;
 import com.alanbaumgartner.chess.Position;
 
 public class Piece {
@@ -40,12 +39,30 @@ public class Piece {
         return this.getColor() == Color.WHITE;
     }
 
+    public String getNotation() {
+        return this.role.getNotation();
+    }
+
     @Override
     public String toString() {
         return this.role.getIcon(this.color);
     }
 
-    public String getNotation() {
-        return this.role.getNotation();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Piece piece = (Piece) o;
+
+        if (getColor() != piece.getColor()) return false;
+        return getRole() == piece.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getColor().hashCode();
+        result = 31 * result + getRole().hashCode();
+        return result;
     }
 }

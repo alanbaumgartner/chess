@@ -1,6 +1,7 @@
 package com.alanbaumgartner.chess;
 
 import com.alanbaumgartner.chess.pieces.Piece;
+import com.alanbaumgartner.chess.util.NotationUtility;
 
 public class Position {
     private final int file;
@@ -132,6 +133,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return piece != null ? piece.toString() : " ";
+        return piece != null ? piece.toString() : NotationUtility.ICON_SPACE;
     }
 }

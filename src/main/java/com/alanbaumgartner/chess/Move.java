@@ -56,7 +56,7 @@ public class Move {
         return ret;
     }
 
-    //    private boolean isCastling(Position startPos, Position destPos) {
+//    private boolean isCastling(Position startPos, Position destPos) {
 //        if (startPos.getPiece() == null || destPos.getPiece() != null) {
 //            return false;
 //        }
@@ -84,9 +84,10 @@ public class Move {
             notation = queenSideCastle ? "O-O-O" : "O-O";
         } else {
             notation = piece.getNotation() +
-                    (capturing ? "x" : "") +
-                    NotationUtility.getRowMappingFromInt(destPos.getFile()) +
-                    (destPos.getRank() + 1) + (checking ? "+" : "");
+                        (capturing ? "x" : "") +
+                        NotationUtility.getRowMappingFromInt(destPos.getFile()) +
+                        (destPos.getRank() + 1) +
+                        (checking ? "+" : "");
         }
         return notation;
     }
